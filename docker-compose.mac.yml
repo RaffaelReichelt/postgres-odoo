@@ -1,0 +1,40 @@
+version: "3.9"
+services:
+  postgres:
+    image: docker.io/bitnami/postgresql:latest
+    networks:
+      - postgres
+    secrets:
+      - postgres
+      - odoo
+    deploy:
+      replicas: 1
+      # placement:
+      #   constraints:
+      #     - "node.role == manager"
+      labels:
+         - traefik.enable=false
+    environment:
+      - POSTGRESQL_POSTGRES_PASSWORD_FILE=/run/secrets/postgres
+      - POSTGRESQL_DATABASE=odoo
+      - POSTGRESQL_USERNAME=odoo
+      - POSTGRESQL_PASSWORD_FILE=/run/secrets/odoo
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    ports:
+      - 54321:5432
+    volumes:
+    # use this for local development. Should be nfs v4 later
+      - /Users/raffael/Projekte/Docker/postgres-odoo/postgres_data:/bitnami/postgresql
+networks:
+  postgres:
+    driver: overlay
+    attachable: true
+secrets:
+  postgres:
+    external: true
+  odoo:
+    external: true
