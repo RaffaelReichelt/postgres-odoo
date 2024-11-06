@@ -23,7 +23,7 @@ services:
         max-size: "10m"
         max-file: "3"
     ports:
-      - 5432:5432
+      - 54321:5432
     volumes:
     # use this for local development. Should be nfs v4 later
       - /opt/docker/postgres/odoo:/bitnami/postgresql
