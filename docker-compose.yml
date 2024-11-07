@@ -9,9 +9,18 @@ services:
       - odoo
     deploy:
       replicas: 1
+<<<<<<< HEAD
       # placement:
       #   constraints:
       #     - "node.role == manager"
+=======
+<<<<<<< HEAD
+      placement:
+        constraints:
+          - "node.role == manager"
+=======
+>>>>>>> 5d4d06f (initial commit)
+>>>>>>> fe63d22 (initial commit)
       labels:
          - traefik.enable=false
     environment:
@@ -25,16 +34,48 @@ services:
         max-size: "10m"
         max-file: "3"
     ports:
+<<<<<<< HEAD
       - 54321:5432
     volumes:
     # use this for local development. Should be nfs v4 later
       - /opt/docker/postgres/odoo:/bitnami/postgresql
+=======
+<<<<<<< HEAD
+      - 54322:5432
+    volumes:
+    # For development only. Production should be nfs V4
+      - /Users/raffael/Projekte/Docker/postgres-dwh/postgres-data:/bitnami/postgresql
+    #command: tail -f /dev/null
+=======
+      - 5432:5432
+    volumes:
+    # For development only. Production should be nfs V4
+      - /opt/docker/postgres:/bitnami/postgresql
+>>>>>>> 5d4d06f (initial commit)
+>>>>>>> fe63d22 (initial commit)
 networks:
   postgres:
     driver: overlay
     attachable: true
+<<<<<<< HEAD
 secrets:
   postgres:
     external: true
   odoo:
     external: true
+=======
+<<<<<<< HEAD
+  postgres-odoo_postgres:
+    external: true
+=======
+>>>>>>> 5d4d06f (initial commit)
+secrets:
+  postgres:
+    external: true
+  datawarehouse:
+<<<<<<< HEAD
+    external: true
+=======
+    external: true
+>>>>>>> 5d4d06f (initial commit)
+>>>>>>> fe63d22 (initial commit)
