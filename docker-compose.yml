@@ -1,7 +1,8 @@
 version: "3.9"
 services:
   postgres:
-    image: docker.io/bitnami/postgresql:16
+    #image: docker.io/bitnami/postgresql:16
+    image: postgresodoo:latest
     # 2024-10-11 v16
     networks:
       - postgres
@@ -26,7 +27,8 @@ services:
       - 54321:5432
     volumes:
     # use this for local development. Should be nfs v4 later
-      - /opt/docker/postgres/odoo:/bitnami/postgresql
+      - /Users/raffael/Projekte/postgres-odoo/data:/bitnami/postgresql
+      - /Users/raffael/Projekte/postgres-odoo/backups:/opt/bitnami/postgresql/backups
 networks:
   postgres:
     driver: overlay
