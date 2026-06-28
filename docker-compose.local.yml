@@ -1,0 +1,12 @@
+services:
+  postgres:
+    image: docker.io/bitnami/postgresql:latest
+    environment:
+      - POSTGRESQL_POSTGRES_PASSWORD=postgres
+      - POSTGRESQL_DATABASE=odoo
+      - POSTGRESQL_USERNAME=odoo
+      - POSTGRESQL_PASSWORD=odoo
+    ports:
+      - "54321:5432"
+    volumes:
+      - /Users/raffael/Projekte/PrivateMind/postgres-odoo/data:/bitnami/postgresql

@@ -1,8 +1,7 @@
 version: "3.9"
 services:
   postgres:
-    image: docker.io/bitnami/postgresql:16
-    # 2024-10-11 v16
+    image: docker.io/bitnami/postgresql:latest
     networks:
       - postgres
     secrets:
@@ -23,12 +22,10 @@ services:
         max-size: "10m"
         max-file: "3"
     ports:
-    # Todo: Wenn mehrere postgresql instanzen in einem cluster laufen sollen, dann muss der port angepasst werden
-      # - 5432n:5432
-      - 5432:5432
+      - 54321:5432
     volumes:
     # use this for local development. Should be nfs v4 later
-      - /opt/docker/postgres/odoo:/bitnami/postgresql
+      - /Users/raffael/Projekte/postgres-odoo/data:/bitnami/postgresql
 networks:
   postgres:
     driver: overlay
