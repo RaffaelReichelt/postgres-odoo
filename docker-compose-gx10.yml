@@ -1,0 +1,69 @@
+services:
+
+  tailscale-postgres:
+    image: tailscale/tailscale:latest
+    hostname: postgres-odoo
+    environment:
+      - TS_AUTHKEY=${TS_AUTHKEY?Variable not set}
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_USERSPACE=true
+      - TS_SERVE_CONFIG=/etc/tailscale/serve.json
+    volumes:
+      - tailscale-postgres-state:/var/lib/tailscale
+      - /home/raffael/Projekte/PrivateMind/postgres-odoo/tailscale/serve.json:/etc/tailscale/serve.json:ro
+    networks:
+      - postgres
+    deploy:
+      replicas: 1
+      labels:
+        - traefik.enable=false
+      placement:
+        constraints:
+          - node.role == manager
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+
+  postgres:
+    image: docker.io/bitnami/postgresql:latest
+    networks:
+      - postgres
+    secrets:
+      - postgres
+      - odoo
+    environment:
+      - POSTGRESQL_POSTGRES_PASSWORD_FILE=/run/secrets/postgres
+      - POSTGRESQL_DATABASE=odoo
+      - POSTGRESQL_USERNAME=odoo
+      - POSTGRESQL_PASSWORD_FILE=/run/secrets/odoo
+    volumes:
+      - /home/raffael/Projekte/PrivateMind/postgres-odoo/data:/bitnami/postgresql
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      replicas: 1
+      labels:
+        - traefik.enable=false
+      placement:
+        constraints:
+          - node.role == manager
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+
+volumes:
+  tailscale-postgres-state:
+
+networks:
+  postgres:
+    driver: overlay
+    attachable: true
+
+secrets:
+  postgres:
+    external: true
+  odoo:
+    external: true
